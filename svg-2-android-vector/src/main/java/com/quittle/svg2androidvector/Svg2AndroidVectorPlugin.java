@@ -122,6 +122,10 @@ public class Svg2AndroidVectorPlugin implements Plugin<Project> {
         for (Collection<Directory> setOfDirs : resourceCollections) {
             for (Directory directory : setOfDirs) {
                 File resDir = directory.getAsFile();
+                final String svgSourceDir = extension.getSvgSourceDir();
+
+                if (svgSourceDir != null && !svgSourceDir.isEmpty())
+                    resDir = new File(resDir.getParentFile(), svgSourceDir);
 
                 if (resDir.exists()) {
                     ConfigurableFileTree svgTree = project.fileTree(resDir);
