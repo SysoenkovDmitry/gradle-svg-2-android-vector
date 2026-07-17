@@ -6,6 +6,7 @@ import com.android.build.api.variant.SourceDirectories;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.gradle.api.GradleException;
 import org.gradle.api.file.ConfigurableFileTree;
 import org.gradle.api.file.Directory;
 import org.gradle.api.provider.Provider;
@@ -124,9 +125,13 @@ public class Svg2AndroidVectorPlugin implements Plugin<Project> {
                 File resDir = directory.getAsFile();
                 final String svgSourceDir = extension.getSvgSourceDir();
 
-                if (svgSourceDir != null && !svgSourceDir.isEmpty())
-                    resDir = new File(resDir.getParentFile(), svgSourceDir);
+                if (svgSourceDir != null)
+                {
+                    if (svgSourceDir.isEmpty())
+                        throw new GradleException("Plugin configuration error: 'svgSourceDir' cannot be empty.");
 
+                    resDir = new File(resDir.getParentFile(), svgSourceDir);
+                }
                 if (resDir.exists()) {
                     ConfigurableFileTree svgTree = project.fileTree(resDir);
                     svgTree.include(SVG_FILTER_PATTERN);
