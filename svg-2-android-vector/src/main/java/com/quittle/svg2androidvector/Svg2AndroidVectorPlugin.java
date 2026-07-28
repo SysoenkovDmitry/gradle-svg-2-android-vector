@@ -128,8 +128,13 @@ public class Svg2AndroidVectorPlugin implements Plugin<Project> {
                 if (svgSourceDir != null)
                 {
                     if (svgSourceDir.isEmpty())
-                        throw new GradleException("Plugin configuration error: 'svgSourceDir' cannot be empty.");
-
+                    {
+                        throw new GradleException(
+                            "Plugin: " + Svg2AndroidVectorPlugin.class.getSimpleName() + "\n" +
+                            "Error configuring component: " + component.getName() + "\n" +
+                            "Reason: 'svgSourceDir' cannot be empty."
+                        );
+                    }
                     resDir = new File(resDir.getParentFile(), svgSourceDir);
                 }
                 if (resDir.exists()) {
